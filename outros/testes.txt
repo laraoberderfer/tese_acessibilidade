@@ -1,0 +1,163 @@
+
+/*
+//verificar se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD']) {
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];  
+   
+    // Consultar o banco de dados para verificar as credenciais
+    try {
+       /* $stmt = $conn->prepare("SELECT * FROM usuario WHERE email = :email");
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);*/  
+
+        $stmt = $conn->prepare("SELECT * FROM usuario WHERE email = :email");
+        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $usuario_id = $usuario['usuario_id'];
+        $nome = $usuario['nome'];
+        $email = $usuario['email'];
+
+        //echo '<pre>';print_r($usuario); echo '</pre>';
+        
+        //verificar se os dados estao corretos
+        if ($senha === $usuario['senha'] && $email === $usuario['email']) {
+            $_SESSION['logado'] = true;
+            $_SESSION['usuario_id'] = $usuario['usuario_id'];
+            $_SESSION['nome'] = $usuario['nome'];
+            $_SESSION['email'] = $usuario['email'];   
+                   
+        } else {
+           echo "<script>alert('Usuário ou senha incorretos!');</script>";
+           //header("Location: index.php");
+        }
+    } catch (PDOException $e) {
+        die("Erro ao executar a consulta: " . $e->getMessage());
+    }   
+}
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
+   // header("Location: index.php");
+    exit;
+}
+
+// Salvar alterações no banco de dados
+if (isset($_POST['salvar'])) {
+    // Capturar os valores enviados pelo formulário
+    $pictograma = $_POST['pictograma'];    
+    $pictograma_tamanho = $_POST['pictograma_tamanho'];
+    $daltonico = $_POST['daltonico'];
+    $protanopia = $_POST['protanopia'];
+    $deuteranopia = $_POST['deuteranopia'];
+    $tritanopia = $_POST['tritanopia'];
+    $legenda = $_POST['legenda'];
+    $legenda_velocidade = $_POST['legenda_velocidade'];
+    $legenda_cor = $_POST['legenda_cor'];
+    $legenda_tamanho = $_POST['legenda_tamanho'];
+    $legenda_posicao = $_POST['legenda_posicao'];
+    $legenda_fundo = $_POST['legenda_fundo'];
+    $musica = $_POST['musica'];
+    $musica_volume = $_POST['musica_volume'];
+    $efeitos_sonoros = $_POST['efeitos_sonoros'];
+    $efeitos_sonoros_volume = $_POST['efeitos_sonoros_volume'];
+    $interprete = $_POST['interprete'];
+    $interprete_expressoes_faciais = $_POST['interprete_expressoes_faciais'];
+    $interprete_gestos = $_POST['interprete_gestos'];
+    $interprete_audio = $_POST['interprete_audio'];
+    $interprete_audio_velocidade = $_POST['interprete_audio_velocidade'];
+    $interprete_audio_volume = $_POST['interprete_audio_volume'];
+
+    try {
+        // Atualizar os dados no banco de dados
+        echo 'entrei para atualizar os dados';
+        $stmt = $conn->prepare("UPDATE acessibilidade SET 
+            pictograma = :pictograma,
+            pictograma_tamanho = :pictograma_tamanho,
+            daltonico = :daltonico,
+            protanopia = :protanopia,
+            deuteranopia = :deuteranopia,
+            tritanopia = :tritanopia,
+            legenda = :legenda,
+            legenda_velocidade = :legenda_velocidade,
+            legenda_cor = :legenda_cor,
+            legenda_tamanho = :legenda_tamanho,
+            legenda_posicao = :legenda_posicao
+            legenda_fundo = :legenda_fundo,
+            musica = :musica,
+            musica_volume = :musica_volume,
+            efeitos_sonoros = :efeitos_sonoros,
+            efeitos_sonoros_volume = :efeitos_sonoros_volume,
+            interprete = :interprete,
+            interprete_expressoes_faciais = :interprete_expressoes_faciais
+            interprete_gestos = :interprete_gestos,
+            interprete_audio = :interprete_audio,
+            interprete_audio_velocidade = :interprete_audio_velocidade,
+            interprete_audio_volume = :interprete_audio_volume            
+            WHERE usuario_id = :usuario_id");
+
+        $stmt->bindValue(':pictograma', $pictograma, PDO::PARAM_INT);
+        $stmt->bindValue(':pictograma_tamanho', $pictograma_tamanho, PDO::PARAM_INT);
+        $stmt->bindValue('daltonico', $daltonico, PDO::PARAM_INT);
+        $stmt->bindValue('protanopia', $protanopia, PDO::PARAM_INT);
+        $stmt->bindValue('deuteranopia', $deuteranopia, PDO::PARAM_INT);
+        $stmt->bindValue('tritanopia', $tritanopia, PDO::PARAM_INT);
+        $stmt->bindValue('legenda', $legenda, PDO::PARAM_INT);
+        $stmt->bindValue('legenda_velocidade', $legenda_velocidade, PDO::PARAM_INT);
+        $stmt->bindValue('legenda_cor', $legenda_cor, PDO::PARAM_STR);
+        $stmt->bindValue('legenda_tamanho', $legenda_tamanho, PDO::PARAM_INT);
+        $stmt->bindValue('legenda_posicao', $legenda_posicao, PDO::PARAM_INT);
+        $stmt->bindValue('legenda_fundo', $legenda_fundo, PDO::PARAM_STR);
+        $stmt->bindValue('musica', $musica, PDO::PARAM_INT);
+        $stmt->bindValue('musica_volume', $musica_volume, PDO::PARAM_INT);
+        $stmt->bindValue('efeitos_sonoros', $efeitos_sonoros, PDO::PARAM_INT);
+        $stmt->bindValue('efeitos_sonoros_volume', $efeitos_sonoros_volume, PDO::PARAM_INT);
+        $stmt->bindValue('interprete', $interprete, PDO::PARAM_INT);
+        $stmt->bindValue('interprete_expressoes_faciais', $interprete_expressoes_faciais, PDO::PARAM_INT);
+        $stmt->bindValue('interprete_gestos', $interprete_gestos, PDO::PARAM_INT);
+        $stmt->bindValue('interprete_audio', $interprete_audio, PDO::PARAM_INT);
+        $stmt->bindValue('interprete_audio_velocidade', $interprete_audio_velocidade, PDO::PARAM_INT);
+        $stmt->bindValue('interprete_audio_volume', $interprete_audio_volume, PDO::PARAM_INT);
+        $stmt->execute();
+        // Redirecionar para a mesma página para recarregar os dados
+        header("Location: restrito.php");
+        exit;
+    } catch (PDOException $e) {
+        die("Erro ao atualizar os dados: " . $e->getMessage());
+    }
+} else { 
+    //echo 'entrei para mostrar os dados';  
+    //buscar os dados de acessibilidade do usuário logado
+    $usuario_id = $_SESSION['usuario_id'];     
+    $stmt = $conn->prepare('SELECT * FROM acessibilidade WHERE usuario_id = :usuario_id');
+    //$stmt = $conn->prepare("SELECT * FROM acessibilidade WHERE usuario_id=$usuario_id");
+    $stmt->bindValue(':usuario_id', $usuario_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_OBJ);
+    //imprimir os dados de acessibilidade     
+    $pictograma = $row->pictograma;    
+    $pictograma_tamanho = $row->pictograma_tamanho;
+    $daltonico = $row->daltonico;
+    $protanopia = $row->protanopia;
+    $deuteranopia = $row->deuteranopia;
+    $tritanopia = $row->tritanopia;
+    $legenda = $row->legenda;
+    $legenda_velocidade = $row->legenda_velocidade;
+    $legenda_cor = $row->legenda_cor;
+    $legenda_tamanho = $row->legenda_tamanho;
+    $legenda_posicao = $row->legenda_posicao;
+    $legenda_fundo = $row->legenda_fundo;
+    $musica = $row->musica;
+    $musica_volume = $row->musica_volume;
+    $efeitos_sonoros = $row->efeitos_sonoros;
+    $efeitos_sonoros_volume = $row->efeitos_sonoros_volume;
+    $interprete = $row->interprete;
+    $interprete_expressoes_faciais = $row->interprete_expressoes_faciais;
+    $interprete_gestos = $row->interprete_gestos;
+    $interprete_audio = $row->interprete_audio;
+    $interprete_audio_velocidade = $row->interprete_audio_velocidade;
+    $interprete_audio_volume = $row->interprete_audio_volume;
+}
