@@ -32,23 +32,13 @@ try {
     $response = $soap->WSListCourses($params);
     //  resposta do servidor
     //print_r($response);
-    
-    // Converte a resposta para JSON sem caracteres escapados
-    $jsonResponse = json_encode($response, JSON_UNESCAPED_UNICODE);
-
-    // Substitui aspas duplas por aspas simples
-    $jsonResponse = str_replace('"', "'", $jsonResponse);
-
-    header('Content-Type: application/json; charset=utf-8');
-    echo $jsonResponse;
-
+    header('Content-Type: application/json');
+    echo json_encode($response);
 } catch (Exception $e) {
     // Exiba o erro caso ocorra
     //echo 'Erro ao chamar o serviço SOAP: ' . $e->getMessage();
-    $errorResponse = json_encode(['error' => 'Erro ao chamar o serviço SOAP: ' . $e->getMessage()], JSON_UNESCAPED_UNICODE);
-    $errorResponse = str_replace('"', "'", $errorResponse);
     header('Content-Type: application/json');
-    echo $errorResponse;
+    echo json_encode(['error' => 'Erro ao chamar o serviço SOAP: ' . $e->getMessage()]);
 }
 ?>
 

@@ -33,13 +33,13 @@ try {
     //  resposta do servidor
     //print_r($response);
     
-    // Converte a resposta para JSON sem caracteres escapados
+    // Converta a resposta para JSON sem caracteres escapados
     $jsonResponse = json_encode($response, JSON_UNESCAPED_UNICODE);
 
-    // Substitui aspas duplas por aspas simples
+    // Substitua aspas duplas por aspas simples
     $jsonResponse = str_replace('"', "'", $jsonResponse);
 
-    header('Content-Type: application/json; charset=utf-8');
+    header('Content-Type: application/json');
     echo $jsonResponse;
 
 } catch (Exception $e) {
