@@ -1,5 +1,5 @@
 <?php
-
+//Gerar o log de acesso as APIs
 $db = "pgsql";
 $dbname = "lara";
 $username = "lara";
@@ -11,7 +11,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json; charset=ISO-8859-1");
+header("Content-Type: application/json; charset=ISO-8859-1"); //tentanto ajustar acentuação logs
 header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -53,7 +53,9 @@ function get()
     global $obj;
     $obj->result = "Logs API";
 }
-
+/** 
+ * Função que imprime os logs conforme o aplicativo chamado
+ */
 function post()
 {
     global $obj, $data, $_LOG_PATH;
@@ -70,7 +72,7 @@ function post()
     }
 }
 
-/*
+/* teste no thunderclient para Godot
 {
     "API_KEY": "lkawjflkajsl",
     "app": "godot",
